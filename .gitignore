@@ -1,0 +1,20 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+.env
+
+__pycache__/
+*.pyc
+
+# ambientes virtuais
+.venv/
+venv/
+
+# variáveis sensíveis
+.env
+
+
+.vscode/
+
+*.code-workspace
