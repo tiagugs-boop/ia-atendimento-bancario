@@ -1,78 +1,54 @@
-# API de Atendimento Bancário com IA
+# 🏦 IA de Atendimento Bancário (NLU Service)
 
-Projeto desenvolvido em Python utilizando Flask e modelos de NLP para simular uma solução de inteligência artificial aplicada ao atendimento bancário.
+### 📄 Contexto de Negócio
+Este projeto é um **MVP (Minimum Viable Product)** de uma API de Inteligência Artificial voltada para a classificação automática de demandas em canais digitais bancários. O objetivo é reduzir o tempo médio de resposta (SLA) e priorizar atendimentos críticos (como falhas em transações PIX) através de Processamento de Linguagem Natural (NLP).
 
-## Objetivo
+### 🛠️ Tecnologias Utilizadas
+* **Python 3.10+**: Linguagem base para processamento de dados.
+* **Flask**: Micro-framework para criação de APIs leves e escaláveis.
+* **Hugging Face (Transformers)**: Utilização do modelo `BERT multilingual` para análise de sentimentos.
+* **Logging & Error Handling**: Práticas de resiliência para ambiente corporativo.
 
-Demonstrar uma aplicação prática de IA para:
+---
 
-- Análise de sentimento de mensagens de clientes
-- Classificação de demandas (reclamação, dúvida, elogio, transação)
-- Geração de resposta automatizada
+### 🏗️ Arquitetura e Decisões Técnicas
+Para atender aos padrões de qualidade exigidos em sistemas bancários, o projeto foi estruturado com:
 
-## Contexto de Negócio
+1.  **Singleton Pattern**: O modelo de IA é carregado via *Lazy Loading*, garantindo que a memória RAM seja utilizada de forma eficiente e o modelo carregado apenas uma vez.
+2.  **Separação de Preocupações**: A lógica de classificação de intenções é isolada da camada de transporte (API), facilitando a manutenção e a criação de testes unitários.
+3.  **Resiliência (Try-Except)**: A API possui tratamento de erros global, evitando que falhas de processamento interrompam o serviço (Status 500 estruturado).
+4.  **Validação de Payload**: Implementação de verificações de entrada para garantir a integridade dos dados processados (Status 400).
 
-Este projeto simula um cenário comum em instituições financeiras, onde grandes volumes de mensagens de clientes precisam ser analisados e classificados rapidamente.
+---
 
-A solução pode ser aplicada em:
+### 🚀 Como Executar o Projeto
 
-- Triagem automatizada de atendimentos
-- Identificação de clientes insatisfeitos
-- Priorização de demandas críticas
-- Apoio a canais digitais e atendimento automatizado
-
-## Tecnologias utilizadas
-
-- Python
-- Flask
-- Transformers (Hugging Face)
-- NLP (Processamento de Linguagem Natural)
-
-## Como executar o projeto
-
-### 1. Instalar as dependências.
-
+#### 1. Clonar o repositório
 ```bash
+git clone [https://github.com/tiagugs-boop/ia-atendimento-bancario.git](https://github.com/seu-usuario/ia-atendimento-bancario.git)
+cd ia-atendimento-bancario
+
+```
+#### 2. Instalar as dependencias
 pip install -r requirements.txt
 
-```
-### 2. Rodar o projeto
-
-```bash
+#### 3. Rodar o servidor
 python app.py
 
-```
-### 3. A API estará disponível em
-
-```bash
-http://127.0.0.1:5000/analyze
-
-```
-### Exemplo de uso - Requisição:
-
+### Requisição POST
 {
-  "text": "Estou com erro no aplicativo e nao consigo fazer Pix"
+  "text": "Não consigo realizar um PIX, aparece erro de conexão."
 }
-
-### Resposta
-
+### Resposta da API
 {
-  "texto": "Estou com erro no aplicativo e nao consigo fazer Pix",
-  "sentimento": {
-    "label": "1 star",
-    "score": 0.65
-  },
-  "categoria": "Reclamacao",
-  "resposta_sugerida": "Lamentamos o ocorrido. Sua solicitacao sera analisada pela equipe responsavel."
+  "status": "success",
+  "data": {
+    "classification": {
+      "confidence": "98.45%",
+      "intent": "Transação",
+      "sentiment": "negative"
+    },
+    "original_text": "Não consigo realizar um PIX, aparece erro de conexão.",
+    "suggested_response": "Identificamos que sua dúvida é sobre movimentações financeiras..."
+  }
 }
-
-
-## Diferenciais do projeto
-Integração de IA com API REST
-Simulação de cenário real bancário
-Classificação de mensagens com base em regras de negócio
-Estrutura simples e extensível
-
-## Autor
-
-Tiago Gomes da Silva
